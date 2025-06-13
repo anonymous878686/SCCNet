@@ -27,7 +27,7 @@ class Conv2d(nn.Module):
         if self.training:
             select = (torch.rand_like(old) + self.mask_prob).floor_() == 1.0
             cmp_val = ((cmp_val) | select) & ~lock
-            lock = lock & select
+            lock = lock | select
         return torch.where(cmp_val , new, old), torch.where(cmp_val, new*(1+self.tanh(alpha))+beta, output), lock
 
     def forward(self, x):
