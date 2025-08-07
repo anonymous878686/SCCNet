@@ -10,6 +10,7 @@ from tqdm import tqdm
 
 import matplotlib.pyplot as plt
 import datetime
+from pathlib import Path
 
 
 def write_log(log_file, tags, epoch, train_loss, train_acc, val_loss, top1_acc, top5_acc, learning_rate):
@@ -18,8 +19,10 @@ def write_log(log_file, tags, epoch, train_loss, train_acc, val_loss, top1_acc, 
     log_message = (f"{timestamp} | Epoch {epoch:03d} | train_loss: {train_loss:.4f} | train_acc: {train_acc:.4f} |"
                    f" val_loss: {val_loss:.4f} | top1_acc: {top1_acc:.4f} | top5_acc: {top5_acc:.4f} | learning_rate: {learning_rate:.4f}\n")
 
-
-    with open(log_file, 'a') as f:
+    log_path = Path(log_file)
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    with open(log_path, 'a') as f:
         f.write(log_message)
 
 
