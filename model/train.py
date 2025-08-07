@@ -10,7 +10,7 @@ import torchvision
 from torchvision import transforms
 
 
-from SCCNet import sccnet50 as create_model
+from SCCNet import sccnet34 as create_model
 from utils import train_one_epoch, evaluate, write_log
 
 
@@ -120,7 +120,7 @@ if __name__ == '__main__':
     parser.add_argument('--lrf', type=float, default=0.001)
 
     parser.add_argument('--data-path', type=str,
-                        default="./data/imagenet1k")
+                        default="./data/Imagenet1k")
     parser.add_argument('--model-name', default='model', help='create model name')
 
     parser.add_argument('--weights', type=str, default="",
@@ -132,3 +132,4 @@ if __name__ == '__main__':
     opt = parser.parse_args()
 
     main(opt)
+
