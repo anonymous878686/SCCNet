@@ -10,7 +10,7 @@ import torchvision
 from torchvision import transforms
 
 
-from SCCNet import sccnet34 as create_model
+from SCCNet import sccnet50 as create_model
 from utils import train_one_epoch, evaluate, write_log
 
 
@@ -101,25 +101,26 @@ def main(args):
         tb_writer.add_scalar(tags[3], val_acc1, epoch)
         tb_writer.add_scalar(tags[4], val_acc5, epoch)
         tb_writer.add_scalar(tags[5], optimizer.param_groups[0]["lr"], epoch)
-        write_log("./log/{} training.log".format(args.model_name),tags, epoch, train_loss, train_acc, val_loss, val_acc1,val_acc5, optimizer.param_groups[0]["lr"])
         if val_acc1 > mx_acc:
             mx_acc = val_acc1
             print("New best weight appears!")
             torch.save(model.state_dict(), "./weights/{}-best.pth".format(args.model_name))
         if epoch % 2 == 1:
             torch.save(model.state_dict(), "./weights/{}-latest.pth".format(args.model_name))
+        write_log("./log/{} training.log".format(args.model_name),tags, epoch, train_loss, train_acc, val_loss, val_acc1,val_acc5, optimizer.param_groups[0]["lr"])
+
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--num-classes', type=int, default=1000)
-    parser.add_argument('--epochs', type=int, default=120)
+    parser.add_argument('--epochs', type=int, default=100)
     parser.add_argument('--batch-size', type=int, default=128)
     parser.add_argument('--lr', type=float, default=0.1)
     parser.add_argument('--lrf', type=float, default=0.001)
 
     parser.add_argument('--data-path', type=str,
-                        default="/data/ImageNet1k")
+                        default="./data/imagenet1k")
     parser.add_argument('--model-name', default='model', help='create model name')
 
     parser.add_argument('--weights', type=str, default="",
